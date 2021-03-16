@@ -1,4 +1,16 @@
 from fastapi import FastAPI
+from typing import List
+from pydantic import BaseModel
+
+class Libro(BaseModel):
+    id: int
+    nombre: str
+    autores: List[int] = []
+
+class Autor(BaseModel):
+    id: int
+    nombre: str
+    libros: List[int] = []
 
 app = FastAPI()
 
@@ -56,6 +68,11 @@ def get_all_data():
 @app.get('/libros')
 def get_all_libros():
     return DB['libros']
+
+@app.post('/libros')
+def add_libros(libro: Libro):
+    DB['libros'].append(libro)
+    return libro
 
 @app.get('/libros/{id}')
 def get_single_libros(id:int):
