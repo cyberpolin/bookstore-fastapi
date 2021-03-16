@@ -74,10 +74,7 @@ def get_autores_from_libros(libro_id:int):
     autores = DB['autores']
     autores_res = []
     for libro in libros:
-        print(f'lib id {libro_id}')
-        print(f'lib id {libro["id"]}')
         if libro['id'] == libro_id:
-            print(f'id {id}')
             for autor in libro['autores']:
                 for autor_ext in autores:
                     if autor_ext['id'] == autor:
@@ -100,3 +97,18 @@ def get_single_libros(id:int):
     return {
         "message": "autor no encontrado"
     }
+
+@app.get('/autores/{autor_id}/libros')
+def get_libros_from_autores(autor_id:int):
+    libros = DB['libros']
+    autores = DB['autores']
+    libros_res = []
+    for autor in autores:
+        if autor['id'] == autor_id:
+            for libro in autor['libros']:
+                for libro_data in libros:
+                    if libro_data['id'] == libro:
+                        libros_res.append(libro_data)
+
+    return libros_res
+
